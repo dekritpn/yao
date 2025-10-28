@@ -1,0 +1,5 @@
+# Compiled binary
+othello
+
+# Object files
+*.o
