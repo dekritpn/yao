@@ -712,14 +712,11 @@ public:
  * @brief Fungsi utama aplikasi.
  */
 int main() {
-    std::cout << "======================================\n";
-//    std::cout << " __   __ _    ___   \n";
-//    std::cout << " \ \ / // \  / _ \  \n";
-//    std::cout << "  \ V // _ \| | | | \n";
-//    std::cout << "   | |/ ___ \ |_| | \n";
-//    std::cout << "   |_/_/   \_\___/  \n";
-    std::cout << "YET ANOTHER OTHELLO \n";
-    std::cout << "======================================\n";
+    std::cout << "  __  _____  ____ \n";
+    std::cout << "  \\ \\/ / _ |/ __ \\\n";
+    std::cout << "   \\  / __ / /_/ /\n";
+    std::cout << "   /_/_/ |_\\____/\n";
+    std::cout << "=YET-ANOTHER-OTHELLO=\n";
     std::cout << "Anda (\u25cf Hitam) vs AI (\u25cb Putih, Kedalaman " << 5 << ")\n";
     std::cout << "Perintah: MOVE D3, UNDO, PASS, HINT, QUIT\n";
 
