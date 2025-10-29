@@ -1,4 +1,5 @@
 # TODO
 
-- [ ] Create a better text-based UI. Idea: use a 3x3 textbox to represent a piece-box.
+- [x] Create a better text-based UI. Idea: use a 3x3 textbox to represent a piece-box.
 - [ ] Piece colour should be adjusted according to background theme (dark or light), may be use coloured pieces.
+- [ ] Separating the game engine and the UI engine.
