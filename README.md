@@ -1,42 +1,42 @@
 # YAO: Yet Another Othello
 
-Ini adalah implementasi sederhana dari game Othello (juga dikenal sebagai Reversi) yang dimainkan di terminal. Anda akan bermain sebagai bidak Hitam melawan AI sederhana yang bermain sebagai bidak Putih.
+This is a simple implementation of the Othello game (also known as Reversi) played in the terminal. You will play as the Black pieces against a simple AI that plays as the White pieces.
 
-## Fitur
+## Features
 
-- **Antarmuka Berbasis Teks**: Mainkan langsung di terminal Anda.
-- **Pemain vs AI**: Anda (Hitam) melawan AI (Putih).
-- **AI Cerdas**: AI menggunakan algoritma Minimax dengan optimisasi Alpha-Beta Pruning untuk menentukan langkah terbaik.
-- **Tampilan Langkah Legal**: Langkah yang valid akan ditandai dengan titik (`·`) di papan.
-- **Perintah Dalam Game**:
-    - `MOVE <koordinat>`: Untuk menempatkan bidak (mis., `MOVE D3`).
-    - `UNDO`: Untuk membatalkan langkah terakhir Anda dan langkah AI.
-    - `HINT`: Untuk meminta petunjuk langkah dari AI.
-    - `PASS`: Untuk melewati giliran jika Anda tidak memiliki langkah legal.
-    - `QUIT`: Untuk keluar dari permainan.
+- **Text-Based Interface**: Play directly in your terminal.
+- **Player vs. AI**: You (Black) against the AI (White).
+- **Smart AI**: The AI uses the Minimax algorithm with Alpha-Beta Pruning optimization to determine the best move.
+- **Legal Move Display**: Valid moves will be marked with a dot (`·`) on the board.
+- **In-Game Commands**:
+    - `MOVE <coordinates>`: To place a piece (e.g., `MOVE D3`).
+    - `UNDO`: To undo your last move and the AI's move.
+    - `HINT`: To ask the AI for a move suggestion.
+    - `PASS`: To pass your turn if you have no legal moves.
+    - `QUIT`: To exit the game.
 
-## Cara Kompilasi
+## How to Compile
 
-Pastikan Anda memiliki kompiler C++ (seperti `g++`). Gunakan perintah berikut untuk mengompilasi kode:
+Make sure you have a C++ compiler (like `g++`). Use the following command to compile the code:
 
 ```bash
 g++ yao.cpp -o othello -std=c++17 -Wall
 ```
 
-Perintah ini akan menghasilkan file eksekusi bernama `othello`.
+This command will generate an executable file named `othello`.
 
-## Cara Menjalankan
+## How to Run
 
-Setelah kompilasi berhasil, jalankan game dengan perintah berikut:
+After successful compilation, run the game with the following command:
 
 ```bash
 ./othello
 ```
 
-## Cara Bermain
+## How to Play
 
-1. Jalankan game.
-2. Anda adalah pemain **Hitam (●)**.
-3. Saat giliran Anda, masukkan perintah `MOVE` diikuti dengan koordinat (mis., `MOVE F5`).
-4. AI akan secara otomatis mengambil gilirannya setelah Anda.
-5. Permainan berakhir ketika seluruh papan terisi atau ketika kedua pemain tidak bisa melangkah lagi.
+1. Run the game.
+2. You are the **Black (●)** player.
+3. On your turn, enter the `MOVE` command followed by the coordinates (e.g., `MOVE F5`).
+4. The AI will automatically take its turn after you.
+5. The game ends when the entire board is filled or when neither player can make a move.
