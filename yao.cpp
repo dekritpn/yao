@@ -122,8 +122,8 @@ namespace Core {
     const int DIRECTIONS[8] = {-9, -8, -7, -1, 1, 7, 8, 9};
     
     // Masks to prevent 'wrap-around' (a sequence jumping from H to A or vice-versa)
-    const uint64 MASK_A = 0xFEFEFEFEFEFEFEFEULL; // Prevents wrap-around from column A (used for right shifts)
-    const uint64 MASK_H = 0x7F7F7F7F7F7F7F7FULL; // Prevents wrap-around from column H (used for left shifts)
+    const uint64 MASK_H = 0xFEFEFEFEFEFEFEFEULL; // Prevents wrap-around from column A (used for right shifts)
+    const uint64 MASK_A = 0x7F7F7F7F7F7F7F7FULL; // Prevents wrap-around from column H (used for left shifts)
 
     /**
      * @brief Calculates the discs flipped in a single direction.
@@ -190,11 +190,15 @@ namespace Core {
                     uint64 mask = 0xFFFFFFFFFFFFFFFFULL; // Default mask (columns B-G)
                     
                     // Determine the wrap-around mask
-                    if (DIRECTIONS[d] % 8 != 0) { // Check horizontal/diagonal directions
-                        if (DIRECTIONS[d] > 0) { // Left shift (E, NE, SE), use MASK_H
-                             mask = MASK_H; 
-                        } else { // Right shift (W, NW, SW), use MASK_A
-                             mask = MASK_A; 
+                    int dir = DIRECTIONS[d];
+                    if (dir % 8 != 0) { // Horizontal/diagonal directions
+                        // West directions (-1, -9, 7): prevent wrap from column A
+                        if (dir == -1 || dir == -9 || dir == 7) {
+                            mask = MASK_A; 
+                        }
+                        // East directions (1, 9, -7): prevent wrap from column H
+                        else if (dir == 1 || dir == 9 || dir == -7) {
+                            mask = MASK_H;
                         }
                     }
 
@@ -225,11 +229,15 @@ namespace Core {
         for (int d = 0; d < 8; ++d) {
             uint64 mask = 0xFFFFFFFFFFFFFFFFULL; 
             
-            if (DIRECTIONS[d] % 8 != 0) { 
-                if (DIRECTIONS[d] > 0) { // Left shift (E, NE, SE), use MASK_H
-                     mask = MASK_H; 
-                } else { // Right shift (W, NW, SW), use MASK_A
-                     mask = MASK_A; 
+            int dir = DIRECTIONS[d];
+            if (dir % 8 != 0) { // Horizontal/diagonal directions
+                // West directions (-1, -9, 7): prevent wrap from column A
+                if (dir == -1 || dir == -9 || dir == 7) {
+                    mask = MASK_A; 
+                }
+                // East directions (1, 9, -7): prevent wrap from column H
+                else if (dir == 1 || dir == 9 || dir == -7) {
+                    mask = MASK_H;
                 }
             }
             total_flips |= get_flips_in_direction(move_mask, own_board, opp_board, DIRECTIONS[d], mask);
