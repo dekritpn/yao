@@ -30,6 +30,17 @@ using uint64 = unsigned long long;
 // - Rule functions are pure (do not modify input state).
 // =========================================================================
 
+static const std::string COORDS[64] = {
+    "A1","B1","C1","D1","E1","F1","G1","H1",
+    "A2","B2","C2","D2","E2","F2","G2","H2",
+    "A3","B3","C3","D3","E3","F3","G3","H3",
+    "A4","B4","C4","D4","E4","F4","G4","H4",
+    "A5","B5","C5","D5","E5","F5","G5","H5",
+    "A6","B6","C6","D6","E6","F6","G6","H6",
+    "A7","B7","C7","D7","E7","F7","G7","H7",
+    "A8","B8","C8","D8","E8","F8","G8","H8"
+};
+
 /**
  * @brief Enum to represent the player (black always starts).
  */
@@ -83,21 +94,15 @@ struct GameState {
  * @return Index 0-63, or -1 if the input is invalid.
  */
 int coord_to_index(const std::string& coord) {
-    if (coord.length() != 2) return -1;
+    std::string upper_coord = coord;
+    std::transform(upper_coord.begin(), upper_coord.end(), upper_coord.begin(), ::toupper);
 
-    char col_char = std::toupper(coord[0]);
-    char row_char = coord[1];
-
-    if (col_char < 'A' || col_char > 'H' || row_char < '1' || row_char > '8') {
-        return -1;
+    for (int i = 0; i < 64; ++i) {
+        if (COORDS[i] == upper_coord) {
+            return i;
+        }
     }
-
-    int col = col_char - 'A'; // 0-7
-    int row = row_char - '1'; // 0-7
-
-    // A1 (row 0, col 0) -> 0
-    // H8 (row 7, col 7) -> 63
-    return row * 8 + col;
+    return -1; // Not found
 }
 
 /**
@@ -107,9 +112,7 @@ int coord_to_index(const std::string& coord) {
  */
 std::string index_to_coord(int index) {
     if (index < 0 || index > 63) return "XX";
-    char col_char = 'A' + (index % 8);
-    char row_char = '1' + (index / 8);
-    return std::string() + col_char + row_char;
+    return COORDS[index];
 }
 
 namespace Core {
