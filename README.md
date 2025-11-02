@@ -1,19 +1,19 @@
 # YAO: Yet Another Othello
 
-This is a simple implementation of the Othello game (also known as Reversi) played in the terminal. You will play as the Black pieces against a simple AI that plays as the White pieces.
+This is a simple implementation of the Othello game played in the terminal. You will play as the Black pieces against a simple AI that plays as the White pieces.
 
 ## Features
 
 - **Text-Based Interface**: Play directly in your terminal.
-- **Player vs. AI**: You (Black) against the AI (White).
+- **Player vs. AI**: You (Black/#) against the AI (White/hollow).
 - **Smart AI**: The AI uses the Minimax algorithm with Alpha-Beta Pruning optimization to determine the best move.
 - **Legal Move Display**: Valid moves will be marked with a dot (`·`) on the board.
 - **In-Game Commands**:
-    - `MOVE <coordinates>`: To place a piece (e.g., `MOVE D3`).
-    - `UNDO`: To undo your last move and the AI's move.
-    - `HINT`: To ask the AI for a move suggestion.
-    - `PASS`: To pass your turn if you have no legal moves.
-    - `QUIT`: To exit the game.
+    - `<coordinates>`: To place a piece (e.g., `D3`).
+    - U `UNDO`: To undo your last move and the AI's move.
+    - ? `HINT`: To ask the AI for a move suggestion.
+    - P `PASS`: To pass your turn if you have no legal moves.
+    - Q `QUIT`: To exit the game.
 
 ## How to Compile
 
@@ -36,7 +36,7 @@ After successful compilation, run the game with the following command:
 ## How to Play
 
 1. Run the game.
-2. You are the **Black (●)** player.
+2. You are the **Black (#)** player.
 3. On your turn, enter the `MOVE` command followed by the coordinates (e.g., `MOVE F5`).
 4. The AI will automatically take its turn after you.
 5. The game ends when the entire board is filled or when neither player can make a move.
