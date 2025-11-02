@@ -192,13 +192,13 @@ namespace Core {
                     // Determine the wrap-around mask
                     int dir = DIRECTIONS[d];
                     if (dir % 8 != 0) { // Horizontal/diagonal directions
-                        // West directions (-1, -9, 7): prevent wrap from column A
-                        if (dir == -1 || dir == -9 || dir == 7) {
-                            mask = MASK_A; 
+                        // West directions (-1, -9, -7): prevent wrap from column A
+                        if (dir == -1 || dir == -9 || dir == -7) {
+                            mask = MASK_H; 
                         }
-                        // East directions (1, 9, -7): prevent wrap from column H
-                        else if (dir == 1 || dir == 9 || dir == -7) {
-                            mask = MASK_H;
+                        // East directions (1, 9, 7): prevent wrap from column H
+                        else if (dir == 1 || dir == 9 || dir == 7) {
+                            mask = MASK_A;
                         }
                     }
 
@@ -231,13 +231,13 @@ namespace Core {
             
             int dir = DIRECTIONS[d];
             if (dir % 8 != 0) { // Horizontal/diagonal directions
-                // West directions (-1, -9, 7): prevent wrap from column A
-                if (dir == -1 || dir == -9 || dir == 7) {
-                    mask = MASK_A; 
+                // West directions (-1, -9, -7): prevent wrap from column A
+                if (dir == -1 || dir == -9 || dir == -7) {
+                    mask = MASK_H; 
                 }
-                // East directions (1, 9, -7): prevent wrap from column H
-                else if (dir == 1 || dir == 9 || dir == -7) {
-                    mask = MASK_H;
+                // East directions (1, 9, 7): prevent wrap from column H
+                else if (dir == 1 || dir == 9 || dir == 7) {
+                    mask = MASK_A;
                 }
             }
             total_flips |= get_flips_in_direction(move_mask, own_board, opp_board, DIRECTIONS[d], mask);
