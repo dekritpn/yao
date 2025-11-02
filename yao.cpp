@@ -193,11 +193,11 @@ namespace Core {
                     int dir = DIRECTIONS[d];
                     if (dir % 8 != 0) { // Horizontal/diagonal directions
                         // West directions (-1, -9, -7): prevent wrap from column A
-                        if (dir == -1 || dir == -9 || dir == -7) {
+                        if (dir == -1 || dir == -9 || dir == 7) {
                             mask = MASK_H; 
                         }
                         // East directions (1, 9, 7): prevent wrap from column H
-                        else if (dir == 1 || dir == 9 || dir == 7) {
+                        else if (dir == 1 || dir == 9 || dir == -7) {
                             mask = MASK_A;
                         }
                     }
@@ -232,11 +232,11 @@ namespace Core {
             int dir = DIRECTIONS[d];
             if (dir % 8 != 0) { // Horizontal/diagonal directions
                 // West directions (-1, -9, -7): prevent wrap from column A
-                if (dir == -1 || dir == -9 || dir == -7) {
+                if (dir == -1 || dir == -9 || dir == 7) {
                     mask = MASK_H; 
                 }
                 // East directions (1, 9, 7): prevent wrap from column H
-                else if (dir == 1 || dir == 9 || dir == 7) {
+                else if (dir == 1 || dir == 9 || dir == -7) {
                     mask = MASK_A;
                 }
             }
@@ -532,71 +532,46 @@ namespace UI {
      */
     void print_board(const GameState& state, uint64 legal_moves = 0ULL) {
         // Column header row
-        std::cout << "\n   ";
+        std::cout << "\n  ";
         for (int i = 0; i < 8; ++i) {
-            std::cout << "  " << (char)('A' + i) << "   ";
+            std::cout << " " << (char)('A' + i);
         }
         std::cout << "\n";
+
+        // Top border
+        std::cout << " +";
+        for (int i = 0; i < 8; ++i) {
+            std::cout << "--";
+        }
+        std::cout << "+\n";
 
         for (int row = 0; row < 8; ++row) {
-            // Top border row
-            std::cout << "  +";
+            std::cout << row + 1 << "|";
             for (int col = 0; col < 8; ++col) {
-                std::cout << "-----+";
-            }
-            std::cout << "\n";
+                int index = row * 8 + col;
+                uint64 mask = (1ULL << index);
+                char piece_char = ' ';
+                bool is_legal = (legal_moves & mask);
 
-            // Cell content rows (3 lines)
-            for (int line = 0; line < 3; ++line) {
-                // Row label (only in the middle)
-                if (line == 1) {
-                    std::cout << row + 1 << " |";
-                } else {
-                    std::cout << "  |";
+                if (state.black_discs & mask) {
+                    piece_char = '#';
+                } else if (state.white_discs & mask) {
+                    piece_char = 'O';
+                } else if (is_legal) {
+                    piece_char = '.';
                 }
 
-                for (int col = 0; col < 8; ++col) {
-                    int index = row * 8 + col;
-                    uint64 mask = (1ULL << index);
-                    char piece_char = ' ';
-                    bool is_legal = (legal_moves & mask);
-
-                    if (state.black_discs & mask) {
-                        piece_char = '#';
-                    } else if (state.white_discs & mask) {
-                        piece_char = 'O';
-                    }
-
-                    if (line == 1) {
-                        if (piece_char == '#') {
-                            std::cout << " ### |";
-                        } else if (piece_char == 'O') {
-                            std::cout << " | | |";
-                        } else if (is_legal) {
-                            std::cout << "  .  |";
-                        } else {
-                            std::cout << "     |";
-                        }
-                    } else if (line == 0 || line == 2) {
-                         if (piece_char == '#') {
-                            std::cout << " ### |";
-                        } else if (piece_char == 'O') {
-                            std::cout << " +-+ |";
-                        } else {
-                            std::cout << "     |";
-                        }
-                    }
-                }
-                std::cout << "\n";
+                std::cout << " " << piece_char;
             }
+            std::cout << "|\n";
         }
 
-        // Bottom border row
-        std::cout << "  +";
-        for (int col = 0; col < 8; ++col) {
-            std::cout << "-----+";
+        // Bottom border
+        std::cout << " +";
+        for (int i = 0; i < 8; ++i) {
+            std::cout << "--";
         }
-        std::cout << "\n";
+        std::cout << "+\n";
 
 
         int black_score = Core::count_discs(state.black_discs);
