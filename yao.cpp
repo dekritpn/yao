@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <locale>
 
 using uint64 = unsigned long long;
 
@@ -551,18 +552,18 @@ namespace UI {
             for (int col = 0; col < 8; ++col) {
                 int index = row * 8 + col;
                 uint64 mask = (1ULL << index);
-                char piece_char = ' ';
+                std::string piece_str = " ";
                 bool is_legal = (legal_moves & mask);
 
                 if (state.black_discs & mask) {
-                    piece_char = '#';
+                    piece_str = "\033[94m\u25CF\033[0m"; // Bright Blue
                 } else if (state.white_discs & mask) {
-                    piece_char = 'O';
+                    piece_str = "\033[93m\u25CF\033[0m"; // Yellow
                 } else if (is_legal) {
-                    piece_char = '.';
+                    piece_str = ".";
                 }
 
-                std::cout << " " << piece_char << " \033[90m|\033[0m"; // Grey color for vertical separators
+                std::cout << " " << piece_str << " \033[90m|\033[0m"; // Grey color for vertical separators
             }
             std::cout << "\n";
 
@@ -578,10 +579,10 @@ namespace UI {
         int black_score = Core::count_discs(state.black_discs);
         int white_score = Core::count_discs(state.white_discs);
         
-        std::cout << "\nScore: # Black: " << black_score 
-                  << " | O White: " << white_score << "\n";
+        std::cout << "\nScore: \033[94m\u25CF Blue\033[0m: " << black_score 
+                  << " | \033[93m\u25CF Yellow\033[0m: " << white_score << "\n";
         
-        std::string player_name = (state.current_player == Player::Black) ? "# Black (You)" : "O White (AI)";
+        std::string player_name = (state.current_player == Player::Black) ? "\033[94m\u25CF Blue (You)\033[0m" : "\033[93m\u25CB Yellow (AI)\033[0m";
         std::cout << "Turn: " << player_name << "\n";
         std::cout << "Last Move: " << state.last_move_coord << "\n";
     }
@@ -720,9 +721,9 @@ public:
             int white_score = Core::count_discs(state.white_discs);
 
             if (black_score > white_score) {
-                return "\n=== GAME OVER: BLACK (#) WINS! (" + std::to_string(black_score) + " - " + std::to_string(white_score) + ") ===\n";
+                return "\n=== GAME OVER: BLUE WINS! (" + std::to_string(black_score) + " - " + std::to_string(white_score) + ") ===\n";
             } else if (white_score > black_score) {
-                return "\n=== GAME OVER: WHITE (O) WINS! (" + std::to_string(white_score) + " - " + std::to_string(black_score) + ") ===\n";
+                return "\n=== GAME OVER: YELLOW WINS! (" + std::to_string(white_score) + " - " + std::to_string(black_score) + ") ===\n";
             } else {
                 return "\n=== GAME OVER: DRAW! (" + std::to_string(black_score) + " - " + std::to_string(white_score) + ") ===\n";
             }
@@ -731,25 +732,38 @@ public:
     }
 };
 
+#ifdef _WIN32
+#include <windows.h> // For SetConsoleOutputCP
+#endif
+
 /**
  * @brief The main application function.
  */
 int main() {
+    // Set I/O for UTF-8 (for disc symbols)
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#else
+    try {
+        std::locale::global(std::locale(""));
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Warning: Could not set global locale. UTF-8 characters may not display correctly." << std::endl;
+    }
+#endif
+    std::cout.imbue(std::locale(""));
+
     std::cout << "  __  _____  ____ \n";
     std::cout << "  \\ \\/ / _ |/ __ \\\n";
     std::cout << "   \\  / __ / /_/ /\n";
     std::cout << "   /_/_/ |_\\____/\n";
     std::cout << "=YET-ANOTHER-OTHELLO=\n";
-    std::cout << "You (# Black) vs. AI (O White, Depth " << 5 << ")\n";
+    std::cout << "You (Blue) vs. AI (Yellow, Depth " << 5 << ")\n";
     std::cout << "Commands: A1-H8 (e.g., D3), U (Undo), P (Pass), ? (Hint), Q (Quit)\n";
 
     GameController controller;
     bool running = true;
     std::string input;
     
-    // Set I/O for UTF-8 (for disc symbols)
-    std::cout.imbue(std::locale("en_US.UTF-8")); 
-
     while (running) {
         const GameState& current_state = controller.get_current_state();
         uint64 human_legal_moves = Core::generate_legal_moves(current_state);
@@ -768,7 +782,7 @@ int main() {
             UI::print_board(current_state, human_legal_moves);
 
             if (Core::count_discs(human_legal_moves) == 0) {
-                std::cout << "\n(# Black has no moves! Auto PASS.)\n";
+                std::cout << "\n(Blue has no moves! Auto PASS.)\n";
                 controller.handle_pass();
                 continue;
             }
@@ -786,7 +800,7 @@ int main() {
                     if (!controller.handle_undo()) {
                         std::cout << ">> Error: No more moves to undo (only the initial state remains).\n";
                     } else {
-                        std::cout << ">> UNDO Successful. Returning to Black's turn.\n";
+                        std::cout << ">> UNDO Successful. Returning to Blue's turn.\n";
                     }
                     break;
                 case UI::Command::HINT: {
@@ -801,7 +815,7 @@ int main() {
                 }
                 case UI::Command::PASS:
                     controller.handle_pass();
-                    std::cout << ">> Black chose to PASS.\n";
+                    std::cout << ">> Blue chose to PASS.\n";
                     break;
                 case UI::Command::QUIT:
                     running = false;
@@ -814,12 +828,12 @@ int main() {
         } else {
             // 3. AI's Turn (White)
             UI::print_board(current_state);
-            std::cout << "\nO White's Turn (AI). Thinking...\n";
+            std::cout << "\nYellow's Turn (AI). Thinking...\n";
 
             int ai_move = controller.get_ai_move();
             
             if (ai_move == -1) {
-                std::cout << ">> AI chose to PASS. (O White has no moves).\n";
+                std::cout << ">> AI chose to PASS. (Yellow has no moves).\n";
                 controller.handle_pass();
             } else {
                 std::cout << ">> AI moves to: " << index_to_coord(ai_move) << "\n";
