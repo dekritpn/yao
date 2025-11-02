@@ -534,19 +534,20 @@ namespace UI {
         // Column header row
         std::cout << "\n  ";
         for (int i = 0; i < 8; ++i) {
-            std::cout << " " << (char)('A' + i);
+            std::cout << "  " << (char)('A' + i) << " ";
         }
         std::cout << "\n";
 
-        // Top border
-        std::cout << " +";
+        // Top border of the board
+        std::cout << "\033[90m  +"; // Grey color
         for (int i = 0; i < 8; ++i) {
-            std::cout << "--";
+            std::cout << "---+";
         }
-        std::cout << "+\n";
+        std::cout << "\033[0m\n"; // Reset color
 
         for (int row = 0; row < 8; ++row) {
-            std::cout << row + 1 << "|";
+            // Row with pieces
+            std::cout << "\033[90m" << row + 1 << " |\033[0m"; // Grey color for row number and left border
             for (int col = 0; col < 8; ++col) {
                 int index = row * 8 + col;
                 uint64 mask = (1ULL << index);
@@ -561,17 +562,17 @@ namespace UI {
                     piece_char = '.';
                 }
 
-                std::cout << " " << piece_char;
+                std::cout << " " << piece_char << " \033[90m|\033[0m"; // Grey color for vertical separators
             }
-            std::cout << "|\n";
-        }
+            std::cout << "\n";
 
-        // Bottom border
-        std::cout << " +";
-        for (int i = 0; i < 8; ++i) {
-            std::cout << "--";
+            // Row border
+            std::cout << "\033[90m  +"; // Grey color
+            for (int i = 0; i < 8; ++i) {
+                std::cout << "---+";
+            }
+            std::cout << "\033[0m\n"; // Reset color
         }
-        std::cout << "+\n";
 
 
         int black_score = Core::count_discs(state.black_discs);
