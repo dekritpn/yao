@@ -37,6 +37,6 @@ After successful compilation, run the game with the following command:
 
 1. Run the game.
 2. You are the **Blue** player.
-3. On your turn, enter the `MOVE` command followed by the coordinates (e.g., `MOVE F5`).
+3. On your turn, enter the coordinates (e.g., `F5`).
 4. The AI will automatically take its turn after you.
 5. The game ends when the entire board is filled or when neither player can make a move.
