@@ -5,7 +5,7 @@ This is a simple implementation of the Othello game played in the terminal. You 
 ## Features
 
 - **Text-Based Interface**: Play directly in your terminal.
-- **Player vs. AI**: You (Black/#) against the AI (White/hollow).
+- **Player vs. AI**: You (Blue) against the AI (Yellow).
 - **Smart AI**: The AI uses the Minimax algorithm with Alpha-Beta Pruning optimization to determine the best move.
 - **Legal Move Display**: Valid moves will be marked with a dot (`·`) on the board.
 - **In-Game Commands**:
