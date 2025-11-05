@@ -1,6 +1,6 @@
 # YAO: Yet Another Othello
 
-This is a simple implementation of the Othello game played in the terminal. You will play as the Black pieces against a simple AI that plays as the White pieces.
+This is a simple implementation of the Othello game played in the terminal. You will play as the Blue pieces against a simple AI that plays as the Yellow pieces.
 
 ## Features
 
